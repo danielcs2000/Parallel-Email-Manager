@@ -16,24 +16,22 @@ Please run this script with `python3 index.py`
 
 Time elapsed 
 
-![image](https://user-images.githubusercontent.com/34191864/208284243-ce5c571d-1fb8-4938-9252-c867946f9b73.png)
+![image](https://user-images.githubusercontent.com/34191864/208284559-1a839095-0b5e-45c3-a531-e6114dda4e41.png)
 
 
 Executed emails per 0.5 seconds
 
-![executed_emails](https://user-images.githubusercontent.com/34191864/208284279-5165bd83-7790-407a-b9e3-c00eaf6bbb29.jpeg)
+![executed_emails](https://user-images.githubusercontent.com/34191864/208284564-9bf7f3b7-c036-4999-afb5-0bffcc15cda2.jpeg)
 
 
 Failed emails per 0.5 seconds
 
-
-![failed_emails](https://user-images.githubusercontent.com/34191864/208284282-67fe1ad7-02cc-4c2d-988e-5994c866e882.jpeg)
+![failed_emails](https://user-images.githubusercontent.com/34191864/208284569-8703bc5f-1b8e-4ad1-9baf-946b5b21e425.jpeg)
 
 
 New emails per 0.5 seconds added to the queue
 
-
-![new_emails](https://user-images.githubusercontent.com/34191864/208284286-c5ab3a2d-4526-4af0-953b-9603ccececd2.jpeg)
+![new_emails](https://user-images.githubusercontent.com/34191864/208284574-065c73e9-4a02-4a3d-9f6a-63a87b2ec85a.jpeg)
 
 
 
@@ -41,7 +39,7 @@ Sent emails report (Full text in `reports/sent_emails.txt`)
 
 Contains (id, attempts, priority) 
 
-![image](https://user-images.githubusercontent.com/34191864/208284343-a41610d6-134f-4d03-a26d-4190160a867e.png)
+![image](https://user-images.githubusercontent.com/34191864/208284588-a95f5e9a-8c23-43c7-bdac-55a21b05e5c2.png)
 
 
 
