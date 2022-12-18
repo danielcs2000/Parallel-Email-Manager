@@ -1,7 +1,15 @@
+# Test 1
+
 ### Process to execute
 Please run this script with `python3 index.py`
 
 ### Result images (based on 5 iterations)
+
+#### Considerations
+
+- If an email has **status pending**, **0 attempts** and **priority equal to 1**, then, it goes to the **pending queue**.
+- If an email has **status pending**, **0 attempts** and **priority greater than 1**, then, it goes to the **priority queue**.
+- If an email has **1 or more attempts**, then, it goes to the **retry queue**.
 
 
 Executed emails per 0.5 seconds
