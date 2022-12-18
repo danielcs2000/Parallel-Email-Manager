@@ -39,7 +39,7 @@ class EmailQueueManager:
     __info_manager = InfoManager()
 
     # Script finishes aften n_sample iterations
-    __n_sample = 5
+    __n_sample = 20
 
     __n_subprocess = 8
 

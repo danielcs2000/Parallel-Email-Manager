@@ -34,7 +34,7 @@ class InfoManager:
 
         plt.bar(x, y, width=0.5, edgecolor="white", linewidth=1)
         plt.xlim([0, x[-1] + 0.25])
-        plt.xticks(np.arange(stop=x[-1] + 0.5, step=0.5))
+        plt.xticks(np.arange(stop=x[-1] + 0.5, step=1))
         plt.title("Number of emails executed per 0.5 seconds")
         plt.savefig(f"{self.output_filepath}executed_emails.jpeg")
         plt.clf()
@@ -60,7 +60,7 @@ class InfoManager:
 
         plt.bar(x, y, width=0.5, edgecolor="white", linewidth=1)
         plt.xlim([0, x[-1] + 0.25])
-        plt.xticks(np.arange(stop=x[-1] + 0.5, step=0.5))
+        plt.xticks(np.arange(stop=x[-1] + 0.5, step=1))
         plt.title("Number of failed emails per 0.5 seconds")
         plt.savefig(f"{self.output_filepath}failed_emails.jpeg")
         plt.clf()
