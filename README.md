@@ -1,6 +1,9 @@
 # Test 1
 
 ### Process to execute
+
+Install dependencies with `python3 -m pip install -r requirements.txt`
+
 Please run this script with `python3 index.py`
 
 ### Result images (based on 5 iterations)
