@@ -22,13 +22,18 @@ class QueueInfo(Enum):
 
 class EmailQueueManager:
     __queue = []
+
+    # Queues for each process
     __queue_parallel = {
         QueueState.PENDING: Queue(),
         QueueState.PRIORITY: Queue(),
         QueueState.RETRY: Queue(),
     }
+
+    # Queue to store sent emails to verify pending emails for "self.__queue" variable
     __queue_sent_emails = Queue()
 
+    # Queues to store collected data for report
     __queue_info = {
         QueueInfo.SENT_EMAILS: Queue(),
         QueueInfo.EXECUTED_EMAILS: Queue(),
@@ -41,8 +46,10 @@ class EmailQueueManager:
     # Script finishes aften n_sample iterations
     __n_sample = 20
 
+    # Number of subprocesses for each process (N = 8)
     __n_subprocess = 8
 
+    # Unordered set to store the email id's of sent emails O(1)
     __enqueue_set = set()
 
     def __init__(self):
@@ -50,12 +57,15 @@ class EmailQueueManager:
         # This var "self.__queue" is the variable that save the current queue of emails
         self.__queue = self.__generate_emails(quantity=1)
 
+        # Queues for each subprocess
+        # N subprocess for each process
         self.__queue_subprocess = {
             QueueState.PENDING: [Queue() for _ in range(self.__n_subprocess)],
             QueueState.RETRY: [Queue() for _ in range(self.__n_subprocess)],
             QueueState.PRIORITY: [Queue() for _ in range(self.__n_subprocess)],
         }
 
+        # Queues for each process
         self.__queue_process = {
             QueueState.PENDING: Process(
                 target=self.__handle_queue_process, args=(QueueState.PENDING,)
@@ -69,8 +79,12 @@ class EmailQueueManager:
         }
 
         self.__queue_parallel_processor()
+        self.__generate_report()
 
     def __check_all_subprocess_empty_queues(self) -> bool:
+        """
+        Return `True` if all subprocess queues are empty. Otherwise, return `False`
+        """
         queues_empty = []
         for queue_state in QueueState:
             queues_empty.extend(
@@ -80,12 +94,17 @@ class EmailQueueManager:
         return all(queues_empty)
 
     def __check_all_process_empty_queues(self) -> bool:
+        """
+        Return `True` if all process queues are empty. Otherwise, return `False`
+        """
         return all(
             [self.__queue_parallel[queue_state].empty() for queue_state in QueueState]
         )
 
     def __handle_subprocess(self, queue_state: QueueState, queue_idx: int) -> None:
-
+        """
+        Handle each subprocess for each process.
+        """
         while True:
 
             if not self.__queue_subprocess[queue_state][queue_idx].empty():
@@ -124,11 +143,22 @@ class EmailQueueManager:
                     return
 
     def __handle_queue_process(self, queue_state: QueueState) -> None:
-        processes = [
+        """
+        Handle each process for each process:
+
+        - Pending Queue Process
+            - N subprocess
+        - Retry Queue Process
+            - N subprocess
+        - Priority Queue Process
+            - N subprocess
+        """
+        # Start queue subprocesses
+        subprocesses = [
             Process(target=self.__handle_subprocess, args=(queue_state, idx))
             for idx in range(self.__n_subprocess)
         ]
-        [process.start() for process in processes]
+        [subprocess.start() for subprocess in subprocesses]
 
         current_subprocess_idx = 0
 
@@ -153,10 +183,14 @@ class EmailQueueManager:
                 if self.__check_all_process_empty_queues():
                     break
 
-        [process.join() for process in processes]
+        # Wait for subprocesses to finish
+        [subprocess.join() for subprocess in subprocesses]
 
     def __queue_parallel_processor(self) -> None:
-
+        """
+        Function to process emails in parallel
+        """
+        # Start queue processes
         [process.start() for process in self.__queue_process.values()]
 
         start = time.time()
@@ -193,18 +227,21 @@ class EmailQueueManager:
 
             time.sleep(0.5)
 
+        # Wait for processes to finish
         [process.join() for process in self.__queue_process.values()]
 
+        # Check if all emails of the queues were processed
         assert self.__check_all_process_empty_queues()
         assert self.__check_all_subprocess_empty_queues()
 
         end = time.time()
 
         print(f"time elapsed: {end-start}")
-        self.__generate_report()
 
     def __generate_report(self) -> None:
-
+        """
+        Generates the report with the collected data
+        """
         self.__queue_info[QueueInfo.SENT_EMAILS].put(None)
         self.__info_manager.sent_emails = list(
             iter(self.__queue_info[QueueInfo.SENT_EMAILS].get, None)

@@ -14,6 +14,9 @@ class InfoManager:
         self.output_filepath = "reports/"
 
     def __generate_executed_emails_graph(self) -> None:
+        """
+        Generates a graph of executed emails per 0.5 seconds
+        """
         self.executed_emails.sort(key=lambda x: x["timestamp"])
         observation_time = [
             email["timestamp"] - self.start_timestamp for email in self.executed_emails
@@ -40,6 +43,9 @@ class InfoManager:
         plt.clf()
 
     def __generate_failed_emails_graph(self) -> None:
+        """
+        Generates a graph of failed emails  per 0.5 seconds
+        """
         self.failed_emails.sort(key=lambda x: x["timestamp"])
         observation_time = [
             email["timestamp"] - self.start_timestamp for email in self.failed_emails
@@ -66,6 +72,9 @@ class InfoManager:
         plt.clf()
 
     def __generate_new_emails_graph(self) -> None:
+        """
+        Generates graph of new emails added to the queue per 0.5 seconds
+        """
         self.new_emails.sort(key=lambda x: x["timestamp"])
 
         observation_time = [
@@ -86,6 +95,9 @@ class InfoManager:
         plt.clf()
 
     def __generate_sent_emails_report(self) -> None:
+        """
+        Generates a report of sent emails in .txt that contains (id, attempts, priority)
+        """
         with open(f"{self.output_filepath}sent_emails.txt", "w") as f:
             for email in self.sent_emails:
                 email_id = email["email"]["id"]
@@ -94,6 +106,9 @@ class InfoManager:
                 f.write(f"{email_id},{attemps},{priority}\n")
 
     def generate_overall_report(self) -> None:
+        """
+        Generates the overall report
+        """
         self.__generate_sent_emails_report()
         self.__generate_new_emails_graph()
         self.__generate_failed_emails_graph()
