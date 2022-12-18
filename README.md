@@ -1,7 +1,8 @@
 ### Process to execute
 Please run this script with `python3 index.py`
 
-### Result images
+### Result images (based on 5 iterations)
+
 
 Executed emails per 0.5 seconds
 
