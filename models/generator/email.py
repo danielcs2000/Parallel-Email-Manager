@@ -6,7 +6,7 @@ class Email:
     def generate_one(self):
         return {
             "id": str(uuid.uuid4()),
-            "prority": random.randint(1, 3),
+            "priority": random.randint(1, 3),
             "attempts": 0,
             "status": "pending",
         }
