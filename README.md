@@ -1,4 +1,4 @@
-# Test 1
+# Parallel Email Manager
 
 ### Process to execute
 
